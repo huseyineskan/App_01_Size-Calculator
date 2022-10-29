@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>BEDEN TABLOSU</title>
+
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        body{
+            font-family: "Tahoma", sans-serif;
+        }
+
+        .my-block {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: calc(100vh - 40px);
+        }
+
+        .my-block img{
+            width: 180px;
+        }
+
+        .my-block #bt{
+            display: inline-block;
+            font-size: 18px;
+            padding: 10px 20px;
+            text-decoration: none;
+            background-color: #ff6100;
+            color: #fff;
+            border-radius: 10px;
+            border: 1px solid #fff;
+            transition: .2s ease;
+        }
+
+        .my-block #bt:hover{
+            background-color: #fff;
+            color: #ff6100;
+            border-color: #ff6100;
+        }
+
+        .my-block p{
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .bg-overlay{
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            color: #333;
+        }
+
+        .body-size-close{
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+        }
+
+        .body-size-close:hover{
+            cursor: pointer;
+        }
+
+        .body-size-close div{
+            width: 100%;
+            height: 6px;
+            background-color: #fff;
+            border-radius: 10px;            
+        }
+
+        .body-size-close .line1{
+            margin-bottom: 4px;
+            transform: rotate(-45deg) translateX(-13px);
+        }
+
+        .body-size-close .line2{
+            visibility: hidden;
+        }
+
+        .body-size-close .line3{
+            margin-top: 4px;
+            transform: rotate(45deg) translateX(-13px);
+        }
+
+        .body-size-box{
+            background-color: #fff;
+            padding: 0 15px;
+            border-radius: 10px;
+            width: 350px;
+            min-width: 200px;
+            max-width: 400px;
+        }
+
+        .body-size-box h3{
+            border-bottom: 1px solid #eee;
+            padding: 10px;
+        }
+
+        .body-size-box h3,
+        .body-size-box h4{
+            text-align: center;
+        }
+
+        div.result{
+            margin-top: 10px;
+            border-top: 1px solid #eee;
+            text-align: center;
+        }
+
+        .result #size{
+            font-weight: bold;
+            font-size: 50px;
+            /* line-height: 0px; */
+        }
+
+        .body-size-box .boy,
+        .body-size-box .kilo{
+            display: inline-block;
+            width: 49%;
+            padding: 10px 0;
+        }
+
+        .body-size-box input{
+            width: 50px;
+            min-width: 70px;
+            padding: 10px 5px;
+            border-radius: 10px;
+            outline: none;
+            border: 1px solid rgb(156, 156, 156);
+            background-color: rgb(247, 247, 247);
+        }
+
+        .body-size-box .btn{
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        a#calculateSize{
+            background-color: #ff6100;
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 7px 15px;
+            display: inline-block;
+            width: 50%;
+            border-radius: 10px;
+        }
+
+        footer{
+            height: 40px;
+        }
+
+        footer p{
+            text-align: center;
+            color: rgb(143, 143, 143);
+        }
+
+    </style>
+
+</head>
+<body>
+    <div class="my-block">
+        <img src="img/mao_full.svg" alt="" srcset="">
+        <p>You can calculate easily your size.<br>It's a basic size calculator.</p>
+        <a href="#" id="bt">What is your size?</a>
+    </div>
+
+    <div class="bg-overlay">
+        <div class="body-size-close">
+            <div class="line line1"></div>
+            <div class="line line2"></div>
+            <div class="line line3"></div>
+        </div>
+        <div class="body-size-box">
+            <h3>Your Height & Weight Measurement</h3>
+            <div class="boy">
+                <label for="height">Height </label>
+                <input type="number" name="height" id="height" placeholder="160" min="140" max="180">
+                <span>cm</span>
+            </div>
+            <div class="kilo">
+                <label for="weight">Weight </label>
+                <input type="number" name="weight" id="weight" placeholder="60" min="30" max="100">
+                <span>kg</span>
+            </div>
+            <div class="btn">
+                <a href="#" id="calculateSize" onclick="calculateSize();">Calculate</a>
+            </div>
+            <div class="result">
+                <p id="size">-</p>
+                <p>your size</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>designed by heskan</p>
+    </footer>
+    
+
+    <script>
+
+        const btnWhichSize = document.querySelector('#bt');
+        const btnClose = document.querySelector('.body-size-close');
+        const inputHeight = document.querySelector('#height');
+        const inputWeight = document.querySelector('#weight');
+        const result = document.querySelector('#size');
+        const bgOverlay = document.querySelector('.bg-overlay');
+
+        btnWhichSize.addEventListener('click', function(){
+            bgOverlay.style.display = "flex";
+        });
+
+        btnClose.addEventListener('click', function(){
+            bgOverlay.style.display = "none";
+        });
+
+        function calculateSize(){
+            
+            if(inputHeight.value.length != 0 && inputWeight.value.length != 0){
+                
+                const one = inputHeight.value.slice(1,3);
+                const two = inputWeight.value;
+
+
+                // Fark +13 ise
+                if( (one - two) >= 13){
+                    result.textContent = "XS";
+                }
+
+                // Fark +12 dahil ve +8 dahil arasında ise
+                else if( 12 <= (one - two) || (one - two) >= 8 ){
+                    result.textContent = "S";
+                }
+
+                // Fark +7 dahil ve +3 dahil arasında ise
+                else if( 7 <= (one - two) || (one - two) >= 3 ){
+                    result.textContent = "M";
+                }
+
+                // Fark +2 dahil ve -2 dahil arasında ise
+                else if( 2 <= (one - two) || (one - two) == 0 || (two - one) <= 2 ){
+                    result.textContent = "L";
+                }
+
+                // Fark -3 dahil ve -7 dahil arasında ise
+                else if((two - one) <= 3 || (two - one) <= 7 ){
+                    result.textContent = "XL";
+                }
+
+                // Fark -8 dahil ve -12 dahil arasında ise
+                else if((two - one) <= 8 || (two - one) <= 12 ){
+                    result.textContent = "2XL";
+                }
+
+                // Fark -13 dahil ve -17 dahil arasında ise
+                else if((two - one) <= 13 || (two - one) <= 17 ){
+                    result.textContent = "3XL";
+                }
+
+                // Fark -18 dahil ve -22 dahil arasında ise
+                else if((two - one) <= 18 || (two - one) <= 22 ){
+                    result.textContent = "4XL";
+                }
+
+                // Fark -23 dahil ve -27 dahil arasında ise
+                else if((two - one) <= 23 || (two - one) <= 27 ){
+                    result.textContent = "5XL";
+                }
+
+                // Fark -23 dahil ve -27 dahil arasında ise
+                else if((two - one) <= 28 ){
+                    result.textContent = "-";
+                }
+
+                else{
+                    result.textContent = "yok";
+                }
+                
+            }
+            else{
+                result.textContent = "-";
+            }
+        }
+
+
+    </script>
+</body>
+</html>
