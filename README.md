@@ -1,2 +1,2 @@
-# size-calculation
+# Size Calculator
 Easy size calculator
